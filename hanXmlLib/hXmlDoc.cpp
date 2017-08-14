@@ -36,6 +36,11 @@ bool hXmlDoc::is_valid () {
 	return hXmlObject::is_valid ();
 }
 
+// 保存文件
+bool hXmlDoc::save (CString strFile) {
+	return !!m_xml.SaveWithFormatted (strFile);
+}
+
 // 根据文件创建对象
 hXmlDoc hXmlDoc::create_from_file (CString strFile) {
 	hXmlDoc doc;

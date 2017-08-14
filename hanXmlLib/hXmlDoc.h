@@ -35,6 +35,9 @@ public:
 	// 检查当前节点是否有效
 	bool is_valid ();
 
+	// 保存文件
+	bool save (CString strFile);
+
 public:
 	// 根据文件创建对象
 	static hXmlDoc create_from_file (CString strFile);

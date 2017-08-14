@@ -25,6 +25,7 @@ public:
 	hXmlObject (hXmlDoc *pDoc);
 	hXmlObject (hXmlDoc *pDoc, CXmlNodePtr pNode);
 	virtual ~hXmlObject ();
+	hXmlObject (hXmlObject &o);
 	hXmlObject &operator= (hXmlObject &o);
 
 	// 检查当前节点是否有效
@@ -78,7 +79,7 @@ public:
 	// 获取 outer xml
 	CString get_outer_xml ();
 
-private:
+protected:
 	hXmlDoc *m_pDoc = nullptr;
 	CXmlNodePtr m_pNode;
 };

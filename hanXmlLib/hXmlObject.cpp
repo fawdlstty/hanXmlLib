@@ -27,6 +27,11 @@ hXmlObject::hXmlObject (hXmlDoc *pDoc, CXmlNodePtr pNode) : m_pDoc (pDoc), m_pNo
 hXmlObject::~hXmlObject () {
 }
 
+hXmlObject::hXmlObject (hXmlObject &o) {
+	m_pDoc = o.m_pDoc;
+	m_pNode = o.m_pNode;
+}
+
 hXmlObject &hXmlObject::operator= (hXmlObject &o) {
 	m_pDoc = o.m_pDoc;
 	m_pNode = o.m_pNode;
