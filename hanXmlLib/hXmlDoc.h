@@ -38,6 +38,9 @@ public:
 	// 保存文件
 	bool save (CString strFile);
 
+	// 设置SchemaLocation
+	void set_schema_location (std::initializer_list<std::pair<CString, CString>> list);
+
 public:
 	// 根据文件创建对象
 	static hXmlDoc create_from_file (CString strFile);

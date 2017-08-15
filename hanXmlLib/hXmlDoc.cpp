@@ -41,6 +41,31 @@ bool hXmlDoc::save (CString strFile) {
 	return !!m_xml.SaveWithFormatted (strFile);
 }
 
+// 设置SchemaLocation
+void hXmlDoc::set_schema_location (std::initializer_list<std::pair<CString, CString>> list) {
+	// 生成Prefix
+	CString strPrefix = _T ("");
+	for (std::pair<CString, CString> namesp : m_map) {
+		if (namesp.second == _T ("http://www.w3.org/2001/XMLSchema-instance"))
+			strPrefix = namesp.first;
+	}
+	if (strPrefix == _T ("")) {
+		m_map [_T ("xsi")] = _T ("http://www.w3.org/2001/XMLSchema-instance");
+		set_attr (_T ("xmlns:xsi"), m_map [_T ("xsi")]);
+		strPrefix = _T ("xsi");
+	}
+
+	// 生成Uri
+	CString strUri = _T (""), strTmp;
+	for (std::pair<CString, CString> uri : list) {
+		strTmp.Format (_T (" %s %s"), uri.first, uri.second);
+		strUri += strTmp;
+	}
+	if (strUri.GetLength () > 0)
+		strUri = strUri.Right (strUri.GetLength () - 1);
+	set_attr (_T ("schemaLocation"), strUri, strPrefix);
+}
+
 // 根据文件创建对象
 hXmlDoc hXmlDoc::create_from_file (CString strFile) {
 	hXmlDoc doc;
@@ -64,6 +89,7 @@ hXmlDoc hXmlDoc::create_new (CString strRootName, std::initializer_list<std::pai
 	for (std::pair<CString, CString> item : list) {
 		CString strPrefix = (item.first != _T ("") ? item.first : _T ("."));
 		doc.m_map [strPrefix] = item.second;
+		doc.set_attr (_T ("xmlns"), item.second, item.first);
 	}
 	return doc;
 }
