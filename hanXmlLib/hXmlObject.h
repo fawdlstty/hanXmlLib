@@ -15,6 +15,8 @@
 #ifndef __H_XML_OBJECT_H__
 #define __H_XML_OBJECT_H__
 
+#include <vector>
+
 #include "CXml/Xml.h"
 using namespace JWXml;
 
@@ -66,6 +68,9 @@ public:
 
 	// 移除属性
 	bool remove_attr (CString strName, CString strPrefix = _T (""));
+
+	// 获取所有属性
+	std::vector<std::pair<CString, CString>> get_all_attr ();
 
 	// 获取值
 	CString get_value ();

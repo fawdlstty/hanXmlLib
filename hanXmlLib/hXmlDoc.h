@@ -52,6 +52,9 @@ private:
 	// 创建节点
 	hXmlObject create_node (CString strName, CString strPrefix = _T (""));
 
+	// 用于通过字符串创建XML或者打开XML文档时，根据Prefix设置命名空间
+	void parse_prefix ();
+
 	CXml						m_xml;
 	bool						m_bState = false;
 	std::map<CString, CString>	m_map;

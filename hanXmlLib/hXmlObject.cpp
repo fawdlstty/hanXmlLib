@@ -151,6 +151,50 @@ bool hXmlObject::remove_attr (CString strName, CString strPrefix /*= _T ("")*/) 
 	return !!m_pNode->RemoveAttribute (strTmpName);
 }
 
+// 获取所有属性
+std::vector<std::pair<CString, CString>> hXmlObject::get_all_attr () {
+	std::vector<std::pair<CString, CString>> v_attr;
+	CString strXml = this->get_outer_xml ();
+	strXml = strXml.Left (strXml.Find (_T (">")) + 1);
+
+	int state = 0;
+	CString strPrefix = _T (""), strUri = _T ("");
+	for (int i = 0, state = 0; i < strXml.GetLength (); ++i) {
+		TCHAR tch = strXml [i];
+		if (state == 0) { // 还未进入节点标签
+			if ((tch >= _T ('A') && tch <= _T ('Z')) || (tch >= _T ('a') && tch <= _T ('z')))
+				++state;
+		} else if (state == 1) { // 在节点标签中
+			if (tch == _T (' ') || tch == _T ('\t'))
+				++state;
+		} else if (state == 2) { // 待进入属性Prefix
+			if ((tch >= _T ('A') && tch <= _T ('Z')) || (tch >= _T ('a') && tch <= _T ('z'))) {
+				++state;
+				strPrefix += tch;
+			}
+		} else if (state == 3) { // 在属性的Prefix中
+			if (tch == _T (' ') || tch == _T ('\t') || tch == _T ('='))
+				++state;
+			else
+				strPrefix += tch;
+		} else if (state == 4) { // 待进入属性Uri
+			if ((tch >= _T ('A') && tch <= _T ('Z')) || (tch >= _T ('a') && tch <= _T ('z'))) {
+				++state;
+				strUri += tch;
+			}
+		} else if (state == 5) { // 在属性的Uri中
+			if (tch == _T (' ') || tch == _T ('\t') || tch == _T ('>')) {
+				state = 2;
+				v_attr.push_back (std::make_pair (strPrefix, strUri));
+				strPrefix = strUri = _T ("");
+			}
+			else
+				strUri += tch;
+		}
+	}
+	return v_attr;
+}
+
 // 获取值
 CString hXmlObject::get_value () {
 	if (!is_valid ())

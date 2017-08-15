@@ -45,6 +45,7 @@ bool hXmlDoc::save (CString strFile) {
 hXmlDoc hXmlDoc::create_from_file (CString strFile) {
 	hXmlDoc doc;
 	doc.m_bState = !!doc.m_xml.Open (strFile);
+	doc.parse_prefix ();
 	return doc;
 }
 
@@ -52,6 +53,7 @@ hXmlDoc hXmlDoc::create_from_file (CString strFile) {
 hXmlDoc hXmlDoc::create_from_string (CString strXml) {
 	hXmlDoc doc;
 	doc.m_bState = !!doc.m_xml.LoadXml (strXml);
+	doc.parse_prefix ();
 	return doc;
 }
 
@@ -64,6 +66,21 @@ hXmlDoc hXmlDoc::create_new (CString strRootName, std::initializer_list<std::pai
 		doc.m_map [strPrefix] = item.second;
 	}
 	return doc;
+}
+
+// 用于通过字符串创建XML或者打开XML文档时，根据Prefix设置命名空间
+void hXmlDoc::parse_prefix () {
+	std::vector<std::pair<CString, CString>> v_attr = get_all_attr ();
+	for (std::pair<CString, CString> attr : v_attr) {
+		CString strPrefix = attr.first, strUri = attr.second;
+		if (strPrefix.GetLength () >= 5 && strPrefix.Left (5) == _T ("xmlns")) {
+			if (strPrefix.GetLength () == 5)
+				strPrefix = _T (".");
+			else
+				strPrefix = strPrefix.Right (strPrefix.GetLength () - 6);
+			m_map [strPrefix] = strUri;
+		}
+	}
 }
 
 // 创建节点
