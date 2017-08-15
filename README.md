@@ -1,6 +1,6 @@
 # hanXmlLib
 
-一个简单的XML访问库
+一个简单的XML访问库，[项目介绍](https://www.fawdlstty.com/archives/432.html)
 
 访问库基于CXml实现。
 

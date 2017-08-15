@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  File Name:    hXmlLib.h
-//  Project URI:  https://www.fawdlstty.com
+//  Github URI:   https://github.com/fawdlstty/hanXmlLib
+//  Project URI:  https://www.fawdlstty.com/archives/432.html
 //  Description:  用于使用hXmlLib类
 //  Author:       Fawdlstty
 //  Author URI:   https://www.fawdlstty.com
